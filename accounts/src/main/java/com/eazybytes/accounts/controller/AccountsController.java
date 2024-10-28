@@ -182,7 +182,7 @@ public class AccountsController {
                                                          @Pattern(regexp = "^0[7-9][01][0-9]{8}$", message = "Invalid mobile number")
                                                          String mobileNumber
     ){
-            Boolean isDeleted = iAccountService.deleteCustomer(mobileNumber);
+            boolean isDeleted = iAccountService.deleteCustomer(mobileNumber);
         if (isDeleted) {
             return ResponseEntity.ok()
                     .body(new ResponseDto(AccountConstants.STATUS_200, AccountConstants.MESSAGE_200));
@@ -253,7 +253,7 @@ public class AccountsController {
             }
     )
     @GetMapping("/java-version")
-    public ResponseEntity<Map> getJavaVersionInfo(){
+    public ResponseEntity<Map<String,String>> getJavaVersionInfo(){
         Map<String,String> javaInfo = new  LinkedHashMap<>();
         javaInfo.put("JDK",env.getProperty("java.version"));
         return ResponseEntity.ok(javaInfo);

@@ -296,7 +296,7 @@ public class CardController {
 
 
     @GetMapping("java-info")
-    public ResponseEntity<Map> getEnvironment() {
+    public ResponseEntity<Map<String,String>> getEnvironment() {
         Map<String,String> envInfo = new  LinkedHashMap<>();
         envInfo.put("JDK",env.getProperty("java.version"));
         return ResponseEntity.ok().body(envInfo);
