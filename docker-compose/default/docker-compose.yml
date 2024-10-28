@@ -1,0 +1,83 @@
+services:
+  configserver:
+    image: "uexcel247/configserver:s8"
+    container_name: configserver-MS
+    ports:
+      - "8071:8071"
+    healthcheck:
+      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
+
+
+  eurekaserver:
+    image: "uexcel247/eurekaserver:s8"
+    container_name: eurekaserver-MS
+    ports:
+      - "8070:8070"
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+    environment:
+      SPRING_APPLICATION_NAME: "eurekaserver"
+
+  accounts:
+    image: "uexcel247/accounts:s8"
+    container_name: accounts-MS
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: "accounts"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-eurekaserver-config
+
+
+  loan:
+    image: "uexcel247/loan:s8"
+    container_name: loan-MS
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_APPLICATION_NAME: "loan"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-eurekaserver-config
+
+#  loan1:
+#    image: "uexcel247/loan:s8"
+#    container_name: loan-MS1
+#    ports:
+#      - "8091:8090"
+#    environment:
+#      SPRING_APPLICATION_NAME: "loan"
+#    extends:
+#      file: common-config.yml
+#      service: microservice-configserver-eurekaserver-config
+
+
+  card:
+    image: "uexcel247/card:s8"
+    container_name: card-MS
+    ports:
+      - "9000:9000"
+    environment:
+      SPRING_APPLICATION_NAME: "card"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-eurekaserver-config
+
+networks:
+  eazybank:
+    driver: "bridge"
