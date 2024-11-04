@@ -16,12 +16,6 @@ spring:
   profiles:
     active: prod
 
-#  rabbitmq:
-#    host: "localhost"
-#    port: 5672
-#    username: "guest"
-#    password: "guest"
-
   config:
     import: "optional:configserver:http://localhost:8071/"
 #  optional:configserver:http://localhost:8071/ - add optional when the file is not that important
@@ -36,6 +30,17 @@ management:
   endpoint:
     shutdown:
       enabled: true
+
+    health:
+      probes:
+        enabled: true
+
+  health:
+    liveness-state:
+      enabled: true
+    readiness-state:
+      enabled: true
+
   info:
     env:
       enabled: true
@@ -59,3 +64,8 @@ info:
     name: "loan"
     description: "Eazy Bank Loan Application"
     version: "1.0.0"
+logging:
+  level:
+    com:
+      eazybytes:
+        loan: DEBUG

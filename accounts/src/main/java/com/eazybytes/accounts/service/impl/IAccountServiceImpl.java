@@ -3,7 +3,7 @@ package com.eazybytes.accounts.service.impl;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Account;
 import com.eazybytes.accounts.entity.Customer;
-import com.eazybytes.accounts.exception.InvalidInputException;
+import com.eazybytes.accounts.exception.InvalidArgException;
 import com.eazybytes.accounts.exception.ResourceNotFoundException;
 import com.eazybytes.accounts.mapper.AccountMapper;
 import com.eazybytes.accounts.mapper.CustomerMapper;
@@ -29,7 +29,7 @@ public class IAccountServiceImpl implements IAccountService {
     public void createAccount(CustomerDto customerDto) {
         if(customerRepository
                 .existsByMobileNumber(customerDto.getMobileNumber())) {
-            throw new InvalidInputException(
+            throw new InvalidArgException(
                     String.format("Mobile number %s has been used.", customerDto.getMobileNumber())
 
             );

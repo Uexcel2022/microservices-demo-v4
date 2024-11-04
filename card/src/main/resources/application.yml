@@ -14,12 +14,7 @@ spring:
       ddl-auto: update
     show-sql: true
     database-platform: org.hibernate.dialect.H2Dialect
-#  rabbitmq:
-#    host: "localhost"
-#    port: 5672
-#    username: "guest"
-#    password: "guest"
-  
+
   profiles:
     active: prod
 
@@ -35,12 +30,23 @@ management:
     web:
       exposure:
         include: "*"
+    health:
+      probes:
+        enabled: true
+
+
   endpoint:
     shutdown:
       enabled: true
 
   info:
     env:
+      enabled: true
+
+  health:
+    liveness-state:
+      enabled: true
+    readiness-state:
       enabled: true
 
 endpoints:
@@ -62,3 +68,9 @@ info:
     name: "card"
     description: "Eazy Bank Card Application"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      eazybytes:
+        card: DEBUG

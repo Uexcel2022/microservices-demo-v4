@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: gatewayserver
+
+
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+    #  optional:configserver:http://localhost:8071/ where the configuration is not so important
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false                # disabled default routes only when you have written your own.
+          lower-case-service-id: true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+  endpoint:
+    gateway:
+      enabled: true
+
+  info:
+    env:
+      enabled: true
+
+
+info:
+  app:
+    name: "gatewayserver"
+    description: "Eazy Bank Gateway Server Application"
+    version: "1.0.0"
+
+
+logging:
+  level:
+   com:
+    eazybytes:
+      gatewayserver: debug

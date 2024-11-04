@@ -33,14 +33,6 @@ management:
       probes:
         enabled: true
 
-
-#  rabbitmq:
-#    host: "localhost"
-#    port: 5672
-#    username: "guest"
-#    password: "guest"
-
-
 encrypt:
   Key: E1gH3kUxLzN3i9JVzL6hEP7VBaTgF
 

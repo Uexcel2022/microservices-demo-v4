@@ -12,7 +12,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,8 @@ import java.util.Map;
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class AccountsController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AccountsController.class);
 
     @Value("${build.version}")
     private String buildVersion;
@@ -98,13 +101,12 @@ public class AccountsController {
     )
 
     @GetMapping("/fetch-customer")
-    public ResponseEntity<CustomerDto> updateAccount(@Valid @RequestParam("mobileNumber")
-                                                         @Pattern(regexp = "0[7-9][01][0-9]{8}",
-                                                                 message = "Not a valid Nigeria mobile number")
-                                                         String mobileNumber
-    ){
-
-        return ResponseEntity.ok().body(iAccountService.getCustomerByMobileNumber(mobileNumber));
+    public ResponseEntity<CustomerDto> fetchCustomer(@RequestHeader("eazybank-correlation-id") String correlationId,
+                                                     @RequestParam("mobileNumber") String mobileNumber){
+        iAccountService.validateMobileNumber(mobileNumber);
+        CustomerDto customerDto = iAccountService.getCustomerByMobileNumber(mobileNumber);
+        logger.debug("eazybank-correlation-id found: {}", correlationId);
+        return ResponseEntity.ok().body(customerDto);
     }
 
     @Operation(
@@ -178,10 +180,8 @@ public class AccountsController {
 
     )
     @DeleteMapping("/delete-account")
-    public ResponseEntity<ResponseDto> deleteAccount(@RequestParam("mobileNumber")
-                                                         @Pattern(regexp = "^0[7-9][01][0-9]{8}$", message = "Invalid mobile number")
-                                                         String mobileNumber
-    ){
+    public ResponseEntity<ResponseDto> deleteAccount(@RequestParam("mobileNumber") String mobileNumber){
+        iAccountService.validateMobileNumber(mobileNumber);
             boolean isDeleted = iAccountService.deleteCustomer(mobileNumber);
         if (isDeleted) {
             return ResponseEntity.ok()

@@ -4,6 +4,7 @@ server:
 spring:
   application:
     name: accounts
+
   h2:
     console:
       enabled: true
@@ -17,11 +18,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-#  rabbitmq:
-#    host: "localhost"
-#    port: 5672
-#    username: "guest"
-#    password: "guest"
 
   profiles:
     active: prod
@@ -36,9 +32,19 @@ management:
       exposure:
         include: "*"
 
+  health:
+    liveness-state:
+      enabled: true
+    readiness-state:
+      enabled: true
+
   endpoint:
     shutdown:
       enabled: true
+
+    health:
+      probes:
+        enabled:
 
   info:
     env:
@@ -62,3 +68,12 @@ info:
     name: "account"
     description: "Eazy Bank Account Application"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      eazybytes:
+        accounts: DEBUG
+
+
+

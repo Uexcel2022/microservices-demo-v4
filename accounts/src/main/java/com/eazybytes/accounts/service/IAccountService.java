@@ -4,6 +4,7 @@ import com.eazybytes.accounts.constants.AccountConstants;
 import com.eazybytes.accounts.dto.CustomerDto;
 import com.eazybytes.accounts.entity.Account;
 import com.eazybytes.accounts.entity.Customer;
+import com.eazybytes.accounts.exception.InvalidArgException;
 
 import java.util.Random;
 
@@ -43,5 +44,14 @@ public interface IAccountService {
         newAccount.setAccountType(AccountConstants.SAVINGS);
         newAccount.setBranchAddress(AccountConstants.ADDRESS);
         return newAccount;
+    }
+
+
+    default void validateMobileNumber(String mobileNumber) {
+        boolean isValid = mobileNumber.matches("^0[7-9][01][0-9]{8}$");
+        if(!isValid){
+            throw new InvalidArgException(
+                    String.format("Mobile number %s is not invalid", mobileNumber));
+        }
     }
 }
