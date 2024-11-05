@@ -13,7 +13,6 @@ spring:
           enabled: false                # disabled default routes only when you have written your own.
           lower-case-service-id: true
 
-
 management:
   endpoints:
     web:
@@ -29,6 +28,11 @@ management:
     env:
       enabled: true
 
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
 
 info:
   app:

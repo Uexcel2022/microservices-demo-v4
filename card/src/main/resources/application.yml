@@ -30,23 +30,22 @@ management:
     web:
       exposure:
         include: "*"
-    health:
-      probes:
-        enabled: true
-
+  health:
+    liveness-state:
+      enabled: true
+    readiness-state:
+      enabled: true
 
   endpoint:
     shutdown:
       enabled: true
 
+    health:
+      probes:
+        enabled: true
+
   info:
     env:
-      enabled: true
-
-  health:
-    liveness-state:
-      enabled: true
-    readiness-state:
       enabled: true
 
 endpoints:

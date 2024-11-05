@@ -44,7 +44,7 @@ management:
 
     health:
       probes:
-        enabled:
+        enabled: true
 
   info:
     env:
